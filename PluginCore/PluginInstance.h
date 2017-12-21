@@ -23,7 +23,7 @@ public:
 
 private:
 	PluginInstance(const PluginInstance &rhs);
-	const PluginInstance &operator=(const PluginInstance &rhs);
+	const PluginInstance &operator=(const PluginInstance &rhs);	//待实现
 };
 
 //插件加载和卸载时调用的函数
