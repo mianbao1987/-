@@ -116,7 +116,7 @@ bool MyClass2::ParseMsg(CMsgBase* pSrcMsg)
 {
 	string tmp1 = this->GetMsgName();
 	string tmp2 = pSrcMsg->GetMsgName();
-	//cout << tmp << endl;
+	cout << tmp1 << tmp2 << endl;
 
 	return true;
 }

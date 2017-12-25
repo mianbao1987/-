@@ -27,7 +27,7 @@ protected:
 	CSingletonMsgBus() {}
 	~CSingletonMsgBus() {}
 
-	int m_nId;
+	//int m_nId;
 private:
 	MessageBus<> m_bus;
 	std::multimap<string, CMsgBase*> m_map;

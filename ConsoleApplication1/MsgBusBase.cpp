@@ -5,7 +5,7 @@
 void CSingletonMsgBus::RegisterMsg(string& strMsgName,  CMsgBase* pMsg)
 {
 	m_map.insert(std::make_pair(strMsgName , pMsg));
-	m_bus.Attach<CMsgBase*, CMsgBase*>(strMsgName.c_str(), &CMsgBase::Parse, pMsg);
+	m_bus.Attach<CMsgBase*, CMsgBase*>(strMsgName, &CMsgBase::Parse, pMsg);
 }
 
 void CSingletonMsgBus::RemoveMsg(string & strMsgName)

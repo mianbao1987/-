@@ -41,7 +41,7 @@ class MessageBus : boost::noncopyable
 public:
 	//注册消息
 	template< class... Args, class F, class = typename std::enable_if<!std::is_member_function_pointer<F>::value>::type>
-	void Attach(string strKey, F && f)
+	void Attach(string& strKey, F && f)
 	{
 		std::function<R(Args...)> fn = [&](Args... args) {return f(std::forward<Args>(args)...); };
 		m_map.insert(std::make_pair(strKey + type_name < Args...>(), std::move(fn)));
@@ -49,14 +49,14 @@ public:
 
 	// non-const member function 
 	template<class... Args, class C, class... DArgs, class P>
-	void Attach(string strKey, R(C::*f)(DArgs...), P && p)
+	void Attach(string& strKey, R(C::*f)(DArgs...), P && p)
 	{
 		std::function<R(Args...)> fn = [&, f](Args... args) {return (*p.*f)(std::forward<Args>(args)...); };
 		m_map.insert(std::make_pair(strKey + type_name < Args...>(), std::move(fn)));
 	}
 
 	template<class... Args, class C, class... DArgs, class P>
-	void Attach(string strKey, R(C::*f)(DArgs...) const, P && p)
+	void Attach(string& strKey, R(C::*f)(DArgs...) const, P && p)
 	{
 		std::function<R(Args...)> fn = [&, f](Args... args) {return (*p.*f)(std::forward<Args>(args)...); };
 		m_map.insert(std::make_pair(strKey + type_name < Args...>(), std::move(fn)));
@@ -64,7 +64,7 @@ public:
 
 	//广播消息，主题和参数可以确定一个消息, 所有的消息接收者都将收到并处理该消息
 	template<typename... Args>
-	void SendReq(string strTopic, Args... args)
+	void SendReq(string& strTopic, Args... args)
 	{
 		auto range = m_map.equal_range(strTopic + type_name < Args...>());
 		for (auto it = range.first; it != range.second; it++)
@@ -76,7 +76,7 @@ public:
 
 	//移除消息
 	template<typename... Args>
-	void Remove(string strTopic)
+	void Remove(string& strTopic)
 	{
 		auto range = m_map.equal_range(strTopic + type_name < Args...>());
 		m_map.erase(range.first, range.second);
