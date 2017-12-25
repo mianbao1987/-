@@ -22,6 +22,7 @@ private:
 
 	void Parse(CMsgBase* pSrcMsg, CMsgBase* dstMsg);
 	void Register();
+	void Remove();
 	string m_strMsgName;
 
 };

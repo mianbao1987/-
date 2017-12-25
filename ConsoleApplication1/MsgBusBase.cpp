@@ -8,6 +8,16 @@ void CSingletonMsgBus::RegisterMsg(string& strMsgName,  CMsgBase* pMsg)
 	m_bus.Attach<CMsgBase*, CMsgBase*>(strMsgName.c_str(), &CMsgBase::Parse, pMsg);
 }
 
+void CSingletonMsgBus::RemoveMsg(string & strMsgName)
+{
+	if (m_map.find(strMsgName) == m_map.end())
+	{
+		return;
+	}
+	m_map.erase(strMsgName);
+	m_bus.Remove<CMsgBase*, CMsgBase*>(strMsgName);
+}
+
 
 bool CSingletonMsgBus::SendMsg(string & dstName, CMsgBase * pMsg)
 {

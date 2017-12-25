@@ -78,10 +78,10 @@ public:
 	template<typename... Args>
 	void Remove(string strTopic)
 	{
-		string strMsgType = GetNameofMsgType<Args...>();
-		auto range = m_map.equal_range(strTopic + strMsgType);
+		auto range = m_map.equal_range(strTopic + type_name < Args...>());
 		m_map.erase(range.first, range.second);
 	}
+
 
 private:
 	std::multimap<string, boost::any> m_map;

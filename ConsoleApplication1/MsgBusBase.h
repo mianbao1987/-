@@ -12,6 +12,7 @@ public:
 		return &instance;
 	}
 	void RegisterMsg(string& strMsgName, CMsgBase* pMsg);
+	void RemoveMsg(string& strMsgName);
 	bool SendMsg(string & dstName, CMsgBase * pMsg);
 protected:
 	struct Object_Creator

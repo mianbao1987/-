@@ -8,6 +8,7 @@ CMsgBase::CMsgBase()
 
 CMsgBase::~CMsgBase()
 {
+	Remove();
 }
 
 void CMsgBase::SetMsgName(string name)
@@ -44,4 +45,9 @@ void CMsgBase::Parse(CMsgBase* pMsg, CMsgBase* dstMsg)
 void CMsgBase::Register()
 {
 	CSingletonMsgBus::getInstance()->RegisterMsg(m_strMsgName, this);
+}
+
+void CMsgBase::Remove()
+{
+	CSingletonMsgBus::getInstance()->RemoveMsg(m_strMsgName);
 }

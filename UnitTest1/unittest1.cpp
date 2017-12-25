@@ -65,7 +65,7 @@ namespace UnitTest1
 			test2.SetMsgName("bbbb");
 			string in = "bbbb";
 			//test1.SendMsg(in);
-			Assert::AreEqual((bool)test1.SendMsg(in), true);
+			Assert::AreEqual(true, (bool)test1.SendMsg(in));
 		}
 
 	};
