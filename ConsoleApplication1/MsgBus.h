@@ -4,7 +4,12 @@
 #include <boost/utility.hpp>
 #include <boost/unordered_map.hpp>
 #include <boost/any.hpp>
+#include <boost/thread/thread.hpp>
 #include <map>
+
+
+typedef boost::unique_lock<boost::shared_mutex> ReadLock;
+typedef boost::shared_lock<boost::shared_mutex> WriteLock;
 
 using namespace std;
 
@@ -44,7 +49,10 @@ public:
 	void Attach(string& strKey, F && f)
 	{
 		std::function<R(Args...)> fn = [&](Args... args) {return f(std::forward<Args>(args)...); };
-		m_map.insert(std::make_pair(strKey + type_name < Args...>(), std::move(fn)));
+		{
+			WriteLock rlock(read_write_mutex);
+			m_map.insert(std::make_pair(strKey + type_name < Args...>(), std::move(fn)));
+		}
 	}
 
 	// non-const member function 
@@ -52,14 +60,20 @@ public:
 	void Attach(string& strKey, R(C::*f)(DArgs...), P && p)
 	{
 		std::function<R(Args...)> fn = [&, f](Args... args) {return (*p.*f)(std::forward<Args>(args)...); };
-		m_map.insert(std::make_pair(strKey + type_name < Args...>(), std::move(fn)));
+		{
+			WriteLock rlock(read_write_mutex);
+			m_map.insert(std::make_pair(strKey + type_name < Args...>(), std::move(fn)));
+		}
 	}
 
 	template<class... Args, class C, class... DArgs, class P>
 	void Attach(string& strKey, R(C::*f)(DArgs...) const, P && p)
 	{
 		std::function<R(Args...)> fn = [&, f](Args... args) {return (*p.*f)(std::forward<Args>(args)...); };
-		m_map.insert(std::make_pair(strKey + type_name < Args...>(), std::move(fn)));
+		{
+			WriteLock rlock(read_write_mutex);
+			m_map.insert(std::make_pair(strKey + type_name < Args...>(), std::move(fn)));
+		}
 	}
 
 	//广播消息，主题和参数可以确定一个消息, 所有的消息接收者都将收到并处理该消息
@@ -79,10 +93,15 @@ public:
 	void Remove(string& strTopic)
 	{
 		auto range = m_map.equal_range(strTopic + type_name < Args...>());
-		m_map.erase(range.first, range.second);
+		{
+			WriteLock rlock(read_write_mutex);
+			m_map.erase(range.first, range.second);
+		}
+
 	}
 
 
 private:
 	std::multimap<string, boost::any> m_map;
+	boost::shared_mutex  read_write_mutex;
 };
