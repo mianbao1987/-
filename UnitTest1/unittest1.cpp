@@ -13,6 +13,7 @@ using namespace std;
 class MyClass1 : public CMsgBase
 {
 public:
+	MyClass1(CSingletonMsgBus* pIns) : CMsgBase(pIns) {};
 	bool ParseMsg(CMsgBase* pSrcMsg);
 
 private:
@@ -31,6 +32,7 @@ bool MyClass1::ParseMsg(CMsgBase* pSrcMsg)
 class MyClass2 : public CMsgBase
 {
 public:
+	MyClass2(CSingletonMsgBus* pIns) : CMsgBase(pIns) {};
 	bool ParseMsg(CMsgBase* pSrcMsg);
 private:
 
@@ -59,8 +61,9 @@ namespace UnitTest1
 		TEST_METHOD(TestMethod1)
 		{
 			// TODO: 在此输入测试代码
-			MyClass1 test1;
-			MyClass2 test2;
+			CSingletonMsgBus* pIns = CSingletonMsgBus::getInstance();
+			MyClass1 test1(pIns);
+			MyClass2 test2(pIns);
 			test1.SetMsgName("aaaa");
 			test2.SetMsgName("bbbb");
 			string in = "bbbb";

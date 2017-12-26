@@ -2,8 +2,13 @@
 #include "MsgBase.h"
 #include "MsgBusBase.h"
 
-CMsgBase::CMsgBase()
+
+CMsgBase::CMsgBase(CSingletonMsgBus* pIns)
 {
+	if (pIns)
+	{
+		m_pSingletonMsgBus = pIns;
+	}
 }
 
 CMsgBase::~CMsgBase()
@@ -26,7 +31,7 @@ bool CMsgBase::SendMsg(string& dstMsgName)
 {
 	if (!dstMsgName.empty())
 	{
-		return CSingletonMsgBus::getInstance()->SendMsg(dstMsgName, this);
+		return m_pSingletonMsgBus->SendMsg(dstMsgName, this);
 	}
 
 	return false;
@@ -44,10 +49,10 @@ void CMsgBase::Parse(CMsgBase* pMsg, CMsgBase* dstMsg)
 
 void CMsgBase::Register()
 {
-	CSingletonMsgBus::getInstance()->RegisterMsg(m_strMsgName, this);
+	m_pSingletonMsgBus->RegisterMsg(m_strMsgName, this);
 }
 
 void CMsgBase::Remove()
 {
-	CSingletonMsgBus::getInstance()->RemoveMsg(m_strMsgName);
+	m_pSingletonMsgBus->RemoveMsg(m_strMsgName);
 }

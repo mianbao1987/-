@@ -72,7 +72,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
     <IncludePath>E:\boost_1_61_0;$(IncludePath)</IncludePath>
-    <LibraryPath>E:\boost_1_61_0\libs;$(LibraryPath)</LibraryPath>
+    <LibraryPath>E:\boost_1_61_0\stage\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>

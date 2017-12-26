@@ -88,6 +88,7 @@ CSingletonMsgBus::Object_Creator CSingletonMsgBus::_object_creator;
 class MyClass1 : public CMsgBase
 {
 public:
+	MyClass1(CSingletonMsgBus* pIns) : CMsgBase(pIns) {};
 	bool ParseMsg(CMsgBase* pSrcMsg);
 
 private:
@@ -107,6 +108,7 @@ bool MyClass1::ParseMsg(CMsgBase* pSrcMsg)
 class MyClass2 : public CMsgBase
 {
 public:
+	MyClass2(CSingletonMsgBus* pIns) : CMsgBase(pIns) {};
 	bool ParseMsg(CMsgBase* pSrcMsg);
 private:
 
@@ -127,9 +129,9 @@ bool MyClass2::ParseMsg(CMsgBase* pSrcMsg)
 int main()
 {
 	//TestMessageBus();
-
-	MyClass1 test1;
-	MyClass2 test2;
+	CSingletonMsgBus* pIns = CSingletonMsgBus::getInstance();
+	MyClass1 test1(pIns);
+	MyClass2 test2(pIns);
 	test1.SetMsgName("aaaa");
 	test2.SetMsgName("bbbb");
 	string in = "bbbb";
